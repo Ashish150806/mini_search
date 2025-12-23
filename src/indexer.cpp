@@ -2,18 +2,19 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+using namespace std;
 
 // Helper to read file
-std::string readFile(const std::string& path) {
-    std::ifstream file(path);
-    std::stringstream buffer;
+string readFile(const std::string& path) {
+    ifstream file(path);
+    stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
 }
 
 void Indexer::addDocument(const std::string& filepath, int docId, Tokenizer& tokenizer) {
-    std::string content = readFile(filepath);
-    std::vector<std::string> tokens = tokenizer.tokenize(content);
+    string content = readFile(filepath);
+    vector<string> tokens = tokenizer.tokenize(content);
 
     // Create Document object
     Document doc;
@@ -24,7 +25,7 @@ void Indexer::addDocument(const std::string& filepath, int docId, Tokenizer& tok
     documents.push_back(doc);
 
     // BUILD INVERTED INDEX
-    for (const std::string& word : tokens) {
+    for (const string& word : tokens) {
         // Increment frequency of 'word' in 'docId'
         invertedIndex[word][docId]++;
     }

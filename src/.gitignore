@@ -1,0 +1,9 @@
+# Ignore the entire data folder (The dataset is too big for Git)
+data/
+
+# Ignore the compiled executable (We only want to save source code)
+*.exe
+mysearch
+
+# Ignore VS Code settings (optional but recommended)
+.vscode/

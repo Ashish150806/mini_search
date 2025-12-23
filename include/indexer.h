@@ -5,22 +5,23 @@
 #include <vector>
 #include <unordered_map>
 #include "tokenizer.h"
+using namespace std;
 
 struct Document {
     int id;
-    std::string text;
+    string text;
     int length; // Total terms in doc
-    std::string filename;
+    string filename;
 };
 
 class Indexer {
 public:
-    std::vector<Document> documents;
+    vector<Document> documents;
     
     // The Core Data Structure: Word -> { DocID -> Count }
-    std::unordered_map<std::string, std::unordered_map<int, int>> invertedIndex;
+    unordered_map<string,unordered_map<int, int>> invertedIndex;
 
-    void addDocument(const std::string& filepath, int docId, Tokenizer& tokenizer);
+    void addDocument(const string& filepath, int docId, Tokenizer& tokenizer);
     int getTotalDocuments() const;
 };
 

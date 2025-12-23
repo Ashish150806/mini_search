@@ -4,14 +4,15 @@
 #include <string>
 #include <vector>
 #include <set>
+using namespace std;
 
 class Tokenizer {
 public:
-    std::set<std::string> stopwords;
+    set<string> stopwords;
 
-    void loadStopwords(const std::string& filepath);
-    std::string cleanToken(std::string rawToken);
-    std::vector<std::string> tokenize(const std::string& text);
+    void loadStopwords(const string& filepath);
+    string cleanToken(string rawToken);
+    vector<string> tokenize(const string& text);
 };
 
 #endif

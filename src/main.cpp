@@ -5,8 +5,9 @@
 #include "../include/tokenizer.h"
 #include "../include/indexer.h"
 #include "../include/search.h"
+using namespace std;
 
-namespace fs = std::filesystem;
+namespace fs = filesystem;
 
 int main() {
     // 1. Initialization
@@ -14,12 +15,12 @@ int main() {
     tokenizer.loadStopwords("stopwords.txt"); // Make sure this file exists!
 
     Indexer indexer;
-    std::string dataPath = "data/20_newsgroups"; // Check your path!
+    string dataPath = "data/20_newsgroups"; // Check your path!
 
-    std::cout << "Indexing documents from: " << dataPath << " ..." << std::endl;
+    cout << "Indexing documents from: " << dataPath << " ..." <<endl;
     
     // 2. Indexing Phase (with timer)
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
     
     int docID = 0;
     try {
@@ -27,48 +28,48 @@ int main() {
             if (entry.is_regular_file()) {
                 indexer.addDocument(entry.path().string(), docID, tokenizer);
                 docID++;
-                if (docID % 100 == 0) std::cout << "." << std::flush; // Progress bar
+                if (docID % 100 == 0) cout << "." << flush; // Progress bar
             }
         }
-    } catch (const std::exception& e) {
-        std::cerr << "\nError reading files: " << e.what() << std::endl;
+    } catch (const exception& e) {
+        cerr << "\nError reading files: " << e.what() << endl;
         return 1;
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
+    auto end =chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end - start;
     
-    std::cout << "\nIndex complete! " << indexer.getTotalDocuments() << " documents indexed in " 
-              << elapsed.count() << " seconds." << std::endl;
+    cout << "\nIndex complete! " << indexer.getTotalDocuments() << " documents indexed in " 
+              << elapsed.count() << " seconds." << endl;
 
     // 3. Search Loop
     SearchEngine engine(indexer, tokenizer);
-    std::string query;
+    string query;
 
     while (true) {
-        std::cout << "\n-----------------------------------" << std::endl;
-        std::cout << "Enter search query (or 'exit' to quit): ";
-        std::getline(std::cin, query);
+        cout << "\n-----------------------------------" << endl;
+        cout << "Enter search query (or 'exit' to quit): ";
+        getline(cin, query);
 
         if (query == "exit") break;
 
-        auto searchStart = std::chrono::high_resolution_clock::now();
-        std::vector<SearchResult> results = engine.search(query);
-        auto searchEnd = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> searchTime = searchEnd - searchStart;
+        auto searchStart = chrono::high_resolution_clock::now();
+        vector<SearchResult> results = engine.search(query);
+        auto searchEnd = chrono::high_resolution_clock::now();
+        chrono::duration<double> searchTime = searchEnd - searchStart;
 
-        std::cout << "Found " << results.size() << " results in " << searchTime.count() << " seconds.\n";
+        cout << "Found " << results.size() << " results in " << searchTime.count() << " seconds.\n";
         
         // Show Top 5
-        for (int i = 0; i < std::min((int)results.size(), 5); ++i) {
+        for (int i = 0; i < min((int)results.size(), 5); ++i) {
             int id = results[i].docId;
-            std::cout << "[" << i+1 << "] Score: " << results[i].score 
-                      << " | File: " << indexer.documents[id].filename << std::endl;
+            cout << "[" << i+1 << "] Score: " << results[i].score 
+                      << " | File: " << indexer.documents[id].filename << endl;
             
             // Print snippet (first 100 chars)
-            std::string snippet = indexer.documents[id].text.substr(0, 100);
-            std::replace(snippet.begin(), snippet.end(), '\n', ' '); // Remove newlines for clean display
-            std::cout << "    Snippet: " << snippet << "..." << std::endl;
+            string snippet = indexer.documents[id].text.substr(0, 100);
+            replace(snippet.begin(), snippet.end(), '\n', ' '); // Remove newlines for clean display
+            cout << "    Snippet: " << snippet << "..." << endl;
         }
     }
 
