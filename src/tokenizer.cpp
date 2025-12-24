@@ -3,33 +3,34 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+using namespace std;
 
-void Tokenizer::loadStopwords(const std::string& filepath) {
-    std::ifstream file(filepath);
-    std::string word;
+void Tokenizer::loadStopwords(const string& filepath) {
+    ifstream file(filepath);
+    string word;
     while (file >> word) {
         stopwords.insert(word);
     }
 }
 
 // Remove punctuation and convert to lowercase
-std::string Tokenizer::cleanToken(std::string rawToken) {
-    std::string clean = "";
+string Tokenizer::cleanToken(string rawToken) {
+    string clean = "";
     for (char c : rawToken) {
-        if (std::isalnum(c)) {
-            clean += std::tolower(c);
+        if (isalnum(c)) {
+            clean += tolower(c);
         }
     }
     return clean;
 }
 
-std::vector<std::string> Tokenizer::tokenize(const std::string& text) {
-    std::vector<std::string> tokens;
-    std::stringstream ss(text);
-    std::string word;
+vector<string> Tokenizer::tokenize(const string& text) {
+    vector<string> tokens;
+    stringstream ss(text);
+    string word;
 
     while (ss >> word) {
-        std::string cleaned = cleanToken(word);
+        string cleaned = cleanToken(word);
         // Only add if not empty and not a stopword
         if (!cleaned.empty() && stopwords.find(cleaned) == stopwords.end()) {
             tokens.push_back(cleaned);

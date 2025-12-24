@@ -2,13 +2,14 @@
 #include <cmath> // for log()
 #include <algorithm> // for sort
 #include <iostream>
+using namespace std;
 
 SearchEngine::SearchEngine(Indexer& idx, Tokenizer& tok) 
     : indexer(idx), tokenizer(tok) {}
 
-std::vector<SearchResult> SearchEngine::search(const std::string& query) {
-    std::vector<std::string> queryTokens = tokenizer.tokenize(query);
-    std::unordered_map<int, double> docScores; // DocID -> Score accumulator
+vector<SearchResult> SearchEngine::search(const std::string& query) {
+    vector<string> queryTokens = tokenizer.tokenize(query);
+    unordered_map<int, double> docScores; // DocID -> Score accumulator
 
     int totalDocs = indexer.getTotalDocuments();
 
@@ -41,13 +42,13 @@ std::vector<SearchResult> SearchEngine::search(const std::string& query) {
     }
 
     // Convert map to vector for sorting
-    std::vector<SearchResult> results;
+    vector<SearchResult> results;
     for (auto const& [id, score] : docScores) {
         results.push_back({id, score});
     }
 
     // Sort by score (Highest first)
-    std::sort(results.begin(), results.end(), [](const SearchResult& a, const SearchResult& b) {
+    sort(results.begin(), results.end(), [](const SearchResult& a, const SearchResult& b) {
         return a.score > b.score;
     });
 
