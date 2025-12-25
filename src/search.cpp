@@ -7,14 +7,14 @@ using namespace std;
 SearchEngine::SearchEngine(Indexer& idx, Tokenizer& tok) 
     : indexer(idx), tokenizer(tok) {}
 
-vector<SearchResult> SearchEngine::search(const std::string& query) {
+vector<SearchResult> SearchEngine::search(const string& query) {
     vector<string> queryTokens = tokenizer.tokenize(query);
     unordered_map<int, double> docScores; // DocID -> Score accumulator
 
     int totalDocs = indexer.getTotalDocuments();
 
     // Loop through every word in the user's query
-    for (const std::string& term : queryTokens) {
+    for (const string& term : queryTokens) {
         
         // Check if term exists in our index
         if (indexer.invertedIndex.find(term) == indexer.invertedIndex.end()) {
