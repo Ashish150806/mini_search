@@ -1,14 +1,9 @@
-# Ignore dataset folder (20 Newsgroups is very large)
+# Ignore the entire data folder (The dataset is too big for Git)
 data/
-dataset/
-20news/
 
-# Ignore all raw text files (extra safety)
-*.txt
-
-# Ignore compiled executables / binaries
+# Ignore the compiled executable (We only want to save source code)
 *.exe
 mysearch
 
-# Ignore editor & IDE settings
+# Ignore VS Code settings (optional but recommended)
 .vscode/
